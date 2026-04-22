@@ -18,6 +18,25 @@ app.get("/movies", async (_, res) => {
     });
     res.json(movies);
 });
+app.get("/movies/:id", async (req, res) => {
+    const id = Number(req.params.id);
+    try {
+        const movies = await prisma.movie.findUnique({
+            where: { id },
+            include: {
+                genres: true,
+                languages: true
+            }
+        });
+        if (!movies) {
+            return res.status(404).send({ message: "Filme não encontrado" });
+        }
+        res.status(200).json(movies);
+    }
+    catch (error) {
+        return res.status(500).send({ message: "Erro ao buscar o filme" });
+    }
+});
 app.post("/movies", async (req, res) => {
     const { title, genre_id, language_id, oscar_count, release_date } = req.body;
     try {
