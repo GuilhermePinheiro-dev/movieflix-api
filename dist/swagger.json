@@ -28,6 +28,41 @@
             }
         },
         "/movies/{id}": {
+            "get": {
+                "tags": ["Movie"],
+                "summary": "Buscar um filme esprecífico pelo ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID do filme que deseja buscar",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Movie"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Filme não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro ao buscar o filme"
+                    }
+                }
+            },
             "put": {
                 "tags": ["Movie"],
                 "summary": "Atualizar um filme existente",

@@ -7,7 +7,7 @@ const port = 3000;
 const app = express();
 
 app.use(express.json());
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get("/movies", async (_, res) => {
     const movies = await prisma.movie.findMany({
@@ -20,6 +20,28 @@ app.get("/movies", async (_, res) => {
         },
     });
     res.json(movies);
+});
+
+app.get("/movies/:id", async (req, res) => {
+    const id = Number(req.params.id);
+
+    try {
+        const movies = await prisma.movie.findUnique({
+            where: { id },
+            include: {
+                genres: true,
+                languages: true
+            }
+        });
+
+        if (!movies) {
+            return res.status(404).send({ message: "Filme não encontrado" });
+        }
+
+        res.status(200).json(movies);
+    } catch (error) {
+        return res.status(500).send({ message: "Erro ao buscar o filme" });
+    }
 });
 
 app.post("/movies", async (req, res) => {
@@ -117,7 +139,7 @@ app.get("/movies/:genreName", async (req, res) => {
                     },
                 },
             },
-        }); 
+        });
         res.status(200).send(moviesFilteredGenreName);
     } catch (error) {
         res.status(500).send({ message: "Falha ao encontrar o filme" });
