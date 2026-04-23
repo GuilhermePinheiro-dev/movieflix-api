@@ -92,8 +92,6 @@ DATABASE_URL=postgresql://usuario:senha@localhost:5432/movieFlix
 | ----------------- | ------------------------------- | ----------------------------------------------------- |
 | `DATABASE_URL`    | String de conexão do PostgreSQL | `postgresql://usuario:senha@localhost:5432/movieFlix` |
 | `PORT`            | Porta do servidor               | `3000`                                                |
-| `NODE_ENV`        | Modo de ambiente                | `development` ou `production`                         |
-| `SWAGGER_ENABLED` | Habilitar Swagger UI            | `true` ou `false`                                     |
 
 ## 🚀 Executando o Projeto
 
