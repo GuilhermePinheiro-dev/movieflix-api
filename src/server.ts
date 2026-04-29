@@ -2,7 +2,6 @@ import { prisma } from "../lib/prisma.js";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger.json" with { type: "json" };
-import { equal } from "node:assert";
 
 const port = 3000;
 const app = express();
@@ -20,7 +19,17 @@ app.get("/movies", async (_, res) => {
             languages: true,
         },
     });
-    res.json(movies);
+
+    const totalMovies = await prisma.movie.count();
+
+    let totalDuration = 0
+    for (let movie of movies) {
+        totalDuration += movie.duration ?? 0
+    }
+
+    const averageDuration = totalDuration > 0 ? totalDuration / totalMovies : 0
+
+    res.json({ totalMovies, averageDuration, movies });
 });
 
 app.get("/movies/:id", async (req, res) => {
@@ -46,8 +55,14 @@ app.get("/movies/:id", async (req, res) => {
 });
 
 app.post("/movies", async (req, res) => {
-    const { title, genre_id, language_id, oscar_count, release_date } =
-        req.body;
+    const {
+        title,
+        genre_id,
+        language_id,
+        oscar_count,
+        release_date,
+        duration,
+    } = req.body;
 
     try {
         const movieWithSameTitle = await prisma.movie.findFirst({
@@ -69,6 +84,7 @@ app.post("/movies", async (req, res) => {
                 language_id,
                 oscar_count,
                 release_date: new Date(release_date),
+                duration,
             },
         });
 
