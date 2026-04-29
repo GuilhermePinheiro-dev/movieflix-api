@@ -2,6 +2,7 @@ import { prisma } from "../lib/prisma.js";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger.json" with { type: "json" };
+import { equal } from "node:assert";
 
 const port = 3000;
 const app = express();
@@ -148,10 +149,12 @@ app.get("/movies/:genreName", async (req, res) => {
 
 app.put("/genres/:id", async (req, res) => {
     const id = Number(req.params.id);
-    const name = req.body.name
+    const name = req.body.name;
 
-    if(!name){
-        return res.status(400).send({ message: "O nome do gênero é obrigatório." });
+    if (!name) {
+        return res
+            .status(400)
+            .send({ message: "O nome do gênero é obrigatório." });
     }
     try {
         const genre = await prisma.genre.findUnique({
@@ -164,13 +167,15 @@ app.put("/genres/:id", async (req, res) => {
 
         const existingGenre = await prisma.genre.findFirst({
             where: {
-                name: { equals: name, mode: "insensitive"},
-                id: { not: Number(id)}
-            }
-        })
+                name: { equals: name, mode: "insensitive" },
+                id: { not: Number(id) },
+            },
+        });
 
-        if(existingGenre){
-            return res.status(409).send({ message: "Este nome de gênero já existe." });
+        if (existingGenre) {
+            return res
+                .status(409)
+                .send({ message: "Este nome de gênero já existe." });
         }
 
         const data = { ...req.body };
@@ -182,6 +187,38 @@ app.put("/genres/:id", async (req, res) => {
         res.status(200).send();
     } catch (error) {
         res.status(500).send({ message: "Falha ao atualizar o gênero" });
+    }
+});
+
+app.post("/genres", async (req, res) => {
+    const { name } = req.body;
+
+    if (!name) {
+        return res
+            .status(400)
+            .send({ message: "O nome do gênero é obrigatório." });
+    }
+
+    try {
+        const genreWithSameName = await prisma.genre.findFirst({
+            where: {
+                name: { equals: name, mode: "insensitive" },
+            },
+        });
+
+        if (genreWithSameName) {
+            return res
+                .status(409)
+                .send({ message: "Este nome de gênero já existe." });
+        }
+
+        await prisma.genre.create({
+            data: { name },
+        });
+
+        res.status(201).send();
+    } catch (error) {
+        res.status(500).send({ message: "Falha ao adicionar o gênero" });
     }
 });
 
