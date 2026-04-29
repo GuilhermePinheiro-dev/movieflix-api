@@ -147,6 +147,15 @@ app.get("/movies/:genreName", async (req, res) => {
     }
 });
 
+app.get("/genres", async (_, res) => {
+    
+    const genres = await prisma.genre.findMany({
+        orderBy: {name:"asc"},
+    })
+
+    res.json(genres)
+} )
+
 app.put("/genres/:id", async (req, res) => {
     const id = Number(req.params.id);
     const name = req.body.name;
