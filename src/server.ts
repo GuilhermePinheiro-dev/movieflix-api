@@ -148,6 +148,11 @@ app.get("/movies/:genreName", async (req, res) => {
 
 app.put("/genres/:id", async (req, res) => {
     const id = Number(req.params.id);
+    const name = req.body.name
+
+    if(!name){
+        return res.status(400).send({ message: "O nome do gênero é obrigatório." });
+    }
     try {
         const genre = await prisma.genre.findUnique({
             where: { id },
@@ -155,6 +160,17 @@ app.put("/genres/:id", async (req, res) => {
 
         if (!genre) {
             res.status(404).send({ message: "Falha ao encontrar o gênero" });
+        }
+
+        const existingGenre = await prisma.genre.findFirst({
+            where: {
+                name: { equals: name, mode: "insensitive"},
+                id: { not: Number(id)}
+            }
+        })
+
+        if(existingGenre){
+            return res.status(409).send({ message: "Este nome de gênero já existe." });
         }
 
         const data = { ...req.body };
