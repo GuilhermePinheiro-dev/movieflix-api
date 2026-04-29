@@ -30,8 +30,8 @@ app.get("/movies/:id", async (req, res) => {
             where: { id },
             include: {
                 genres: true,
-                languages: true
-            }
+                languages: true,
+            },
         });
 
         if (!movies) {
@@ -143,6 +143,29 @@ app.get("/movies/:genreName", async (req, res) => {
         res.status(200).send(moviesFilteredGenreName);
     } catch (error) {
         res.status(500).send({ message: "Falha ao encontrar o filme" });
+    }
+});
+
+app.put("/genres/:id", async (req, res) => {
+    const id = Number(req.params.id);
+    try {
+        const genre = await prisma.genre.findUnique({
+            where: { id },
+        });
+
+        if (!genre) {
+            res.status(404).send({ message: "Falha ao encontrar o gênero" });
+        }
+
+        const data = { ...req.body };
+        await prisma.genre.update({
+            where: { id },
+            data,
+        });
+
+        res.status(200).send();
+    } catch (error) {
+        res.status(500).send({ message: "Falha ao atualizar o gênero" });
     }
 });
 
