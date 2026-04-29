@@ -236,6 +236,28 @@ app.post("/genres", async (req, res) => {
     }
 });
 
+app.delete("/genres/:id", async (req, res) => {
+    const id = Number(req.params.id);
+
+    try {
+        const genreNotExist = await prisma.genre.findFirst({
+            where: { id },
+        });
+
+        if (!genreNotExist) {
+            return res
+                .status(404)
+                .send({ message: "Este nome de gênero não existe." });
+        }
+
+        await prisma.genre.delete({ where: { id } });
+
+        res.status(200).send();
+    } catch (error) {
+        res.status(500).send({ message: "Falha ao deletar o gênero" });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Servidor em execução na porta: ${3000}`);
 });
