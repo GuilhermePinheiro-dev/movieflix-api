@@ -2,6 +2,7 @@ import { prisma } from "../lib/prisma.js";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger.json" with { type: "json" };
+import type { Prisma } from "../generated/prisma/client.js";
 
 const port = 3000;
 const app = express();
@@ -9,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get("/movies", async (_, res) => {
+app.get("/movies", async (req, res) => {
     const movies = await prisma.movie.findMany({
         orderBy: {
             title: "asc",
@@ -22,12 +23,12 @@ app.get("/movies", async (_, res) => {
 
     const totalMovies = await prisma.movie.count();
 
-    let totalDuration = 0
+    let totalDuration = 0;
     for (let movie of movies) {
-        totalDuration += movie.duration ?? 0
+        totalDuration += movie.duration ?? 0;
     }
 
-    const averageDuration = totalDuration > 0 ? totalDuration / totalMovies : 0
+    const averageDuration = totalDuration > 0 ? totalDuration / totalMovies : 0;
 
     res.json({ totalMovies, averageDuration, movies });
 });
@@ -51,6 +52,32 @@ app.get("/movies/:id", async (req, res) => {
         res.status(200).json(movies);
     } catch (error) {
         return res.status(500).send({ message: "Erro ao buscar o filme" });
+    }
+});
+
+app.get("/movies/sort", async (req, res) => {
+    const { sort } = req.query;
+
+    const orderBy: Prisma.MovieOrderByWithRelationInput = 
+        sort === "title" 
+            ? { title: "asc" }
+            : sort === "release_date" 
+            ? { release_date: "asc" }
+            : {}; 
+
+    try {
+        const movies = await prisma.movie.findMany({
+            orderBy,
+            include: {
+                genres: true,
+                languages: true,
+            },
+        });
+        res.json(movies);
+    } catch (error) {
+        res.status(500).send({
+            message: "Houve um problema ao buscar os filmes.",
+        });
     }
 });
 
