@@ -95,7 +95,8 @@ export const MovieScalarFieldEnum = {
     release_date: 'release_date',
     genre_id: 'genre_id',
     language_id: 'language_id',
-    oscar_count: 'oscar_count'
+    oscar_count: 'oscar_count',
+    duration: 'duration'
 };
 export const SortOrder = {
     asc: 'asc',

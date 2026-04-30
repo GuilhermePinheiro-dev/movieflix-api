@@ -523,6 +523,7 @@ export declare const MovieScalarFieldEnum: {
     readonly genre_id: "genre_id";
     readonly language_id: "language_id";
     readonly oscar_count: "oscar_count";
+    readonly duration: "duration";
 };
 export type MovieScalarFieldEnum = (typeof MovieScalarFieldEnum)[keyof typeof MovieScalarFieldEnum];
 export declare const SortOrder: {

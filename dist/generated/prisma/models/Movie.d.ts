@@ -17,12 +17,14 @@ export type MovieAvgAggregateOutputType = {
     genre_id: number | null;
     language_id: number | null;
     oscar_count: number | null;
+    duration: number | null;
 };
 export type MovieSumAggregateOutputType = {
     id: number | null;
     genre_id: number | null;
     language_id: number | null;
     oscar_count: number | null;
+    duration: number | null;
 };
 export type MovieMinAggregateOutputType = {
     id: number | null;
@@ -31,6 +33,7 @@ export type MovieMinAggregateOutputType = {
     genre_id: number | null;
     language_id: number | null;
     oscar_count: number | null;
+    duration: number | null;
 };
 export type MovieMaxAggregateOutputType = {
     id: number | null;
@@ -39,6 +42,7 @@ export type MovieMaxAggregateOutputType = {
     genre_id: number | null;
     language_id: number | null;
     oscar_count: number | null;
+    duration: number | null;
 };
 export type MovieCountAggregateOutputType = {
     id: number;
@@ -47,6 +51,7 @@ export type MovieCountAggregateOutputType = {
     genre_id: number;
     language_id: number;
     oscar_count: number;
+    duration: number;
     _all: number;
 };
 export type MovieAvgAggregateInputType = {
@@ -54,12 +59,14 @@ export type MovieAvgAggregateInputType = {
     genre_id?: true;
     language_id?: true;
     oscar_count?: true;
+    duration?: true;
 };
 export type MovieSumAggregateInputType = {
     id?: true;
     genre_id?: true;
     language_id?: true;
     oscar_count?: true;
+    duration?: true;
 };
 export type MovieMinAggregateInputType = {
     id?: true;
@@ -68,6 +75,7 @@ export type MovieMinAggregateInputType = {
     genre_id?: true;
     language_id?: true;
     oscar_count?: true;
+    duration?: true;
 };
 export type MovieMaxAggregateInputType = {
     id?: true;
@@ -76,6 +84,7 @@ export type MovieMaxAggregateInputType = {
     genre_id?: true;
     language_id?: true;
     oscar_count?: true;
+    duration?: true;
 };
 export type MovieCountAggregateInputType = {
     id?: true;
@@ -84,6 +93,7 @@ export type MovieCountAggregateInputType = {
     genre_id?: true;
     language_id?: true;
     oscar_count?: true;
+    duration?: true;
     _all?: true;
 };
 export type MovieAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -169,6 +179,7 @@ export type MovieGroupByOutputType = {
     genre_id: number | null;
     language_id: number | null;
     oscar_count: number | null;
+    duration: number | null;
     _count: MovieCountAggregateOutputType | null;
     _avg: MovieAvgAggregateOutputType | null;
     _sum: MovieSumAggregateOutputType | null;
@@ -188,6 +199,7 @@ export type MovieWhereInput = {
     genre_id?: Prisma.IntNullableFilter<"Movie"> | number | null;
     language_id?: Prisma.IntNullableFilter<"Movie"> | number | null;
     oscar_count?: Prisma.IntNullableFilter<"Movie"> | number | null;
+    duration?: Prisma.IntNullableFilter<"Movie"> | number | null;
     genres?: Prisma.XOR<Prisma.GenreNullableScalarRelationFilter, Prisma.GenreWhereInput> | null;
     languages?: Prisma.XOR<Prisma.LanguageNullableScalarRelationFilter, Prisma.languageWhereInput> | null;
 };
@@ -198,6 +210,7 @@ export type MovieOrderByWithRelationInput = {
     genre_id?: Prisma.SortOrderInput | Prisma.SortOrder;
     language_id?: Prisma.SortOrderInput | Prisma.SortOrder;
     oscar_count?: Prisma.SortOrderInput | Prisma.SortOrder;
+    duration?: Prisma.SortOrderInput | Prisma.SortOrder;
     genres?: Prisma.GenreOrderByWithRelationInput;
     languages?: Prisma.languageOrderByWithRelationInput;
 };
@@ -211,6 +224,7 @@ export type MovieWhereUniqueInput = Prisma.AtLeast<{
     genre_id?: Prisma.IntNullableFilter<"Movie"> | number | null;
     language_id?: Prisma.IntNullableFilter<"Movie"> | number | null;
     oscar_count?: Prisma.IntNullableFilter<"Movie"> | number | null;
+    duration?: Prisma.IntNullableFilter<"Movie"> | number | null;
     genres?: Prisma.XOR<Prisma.GenreNullableScalarRelationFilter, Prisma.GenreWhereInput> | null;
     languages?: Prisma.XOR<Prisma.LanguageNullableScalarRelationFilter, Prisma.languageWhereInput> | null;
 }, "id">;
@@ -221,6 +235,7 @@ export type MovieOrderByWithAggregationInput = {
     genre_id?: Prisma.SortOrderInput | Prisma.SortOrder;
     language_id?: Prisma.SortOrderInput | Prisma.SortOrder;
     oscar_count?: Prisma.SortOrderInput | Prisma.SortOrder;
+    duration?: Prisma.SortOrderInput | Prisma.SortOrder;
     _count?: Prisma.MovieCountOrderByAggregateInput;
     _avg?: Prisma.MovieAvgOrderByAggregateInput;
     _max?: Prisma.MovieMaxOrderByAggregateInput;
@@ -237,11 +252,13 @@ export type MovieScalarWhereWithAggregatesInput = {
     genre_id?: Prisma.IntNullableWithAggregatesFilter<"Movie"> | number | null;
     language_id?: Prisma.IntNullableWithAggregatesFilter<"Movie"> | number | null;
     oscar_count?: Prisma.IntNullableWithAggregatesFilter<"Movie"> | number | null;
+    duration?: Prisma.IntNullableWithAggregatesFilter<"Movie"> | number | null;
 };
 export type MovieCreateInput = {
     title?: string | null;
     release_date?: Date | string | null;
     oscar_count?: number | null;
+    duration?: number | null;
     genres?: Prisma.GenreCreateNestedOneWithoutMoviesInput;
     languages?: Prisma.languageCreateNestedOneWithoutMoviesInput;
 };
@@ -252,11 +269,13 @@ export type MovieUncheckedCreateInput = {
     genre_id?: number | null;
     language_id?: number | null;
     oscar_count?: number | null;
+    duration?: number | null;
 };
 export type MovieUpdateInput = {
     title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     release_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     oscar_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     genres?: Prisma.GenreUpdateOneWithoutMoviesNestedInput;
     languages?: Prisma.languageUpdateOneWithoutMoviesNestedInput;
 };
@@ -267,6 +286,7 @@ export type MovieUncheckedUpdateInput = {
     genre_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     language_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     oscar_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
 };
 export type MovieCreateManyInput = {
     id?: number;
@@ -275,11 +295,13 @@ export type MovieCreateManyInput = {
     genre_id?: number | null;
     language_id?: number | null;
     oscar_count?: number | null;
+    duration?: number | null;
 };
 export type MovieUpdateManyMutationInput = {
     title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     release_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     oscar_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
 };
 export type MovieUncheckedUpdateManyInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -288,6 +310,7 @@ export type MovieUncheckedUpdateManyInput = {
     genre_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     language_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     oscar_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
 };
 export type MovieListRelationFilter = {
     every?: Prisma.MovieWhereInput;
@@ -304,12 +327,14 @@ export type MovieCountOrderByAggregateInput = {
     genre_id?: Prisma.SortOrder;
     language_id?: Prisma.SortOrder;
     oscar_count?: Prisma.SortOrder;
+    duration?: Prisma.SortOrder;
 };
 export type MovieAvgOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     genre_id?: Prisma.SortOrder;
     language_id?: Prisma.SortOrder;
     oscar_count?: Prisma.SortOrder;
+    duration?: Prisma.SortOrder;
 };
 export type MovieMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -318,6 +343,7 @@ export type MovieMaxOrderByAggregateInput = {
     genre_id?: Prisma.SortOrder;
     language_id?: Prisma.SortOrder;
     oscar_count?: Prisma.SortOrder;
+    duration?: Prisma.SortOrder;
 };
 export type MovieMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -326,12 +352,14 @@ export type MovieMinOrderByAggregateInput = {
     genre_id?: Prisma.SortOrder;
     language_id?: Prisma.SortOrder;
     oscar_count?: Prisma.SortOrder;
+    duration?: Prisma.SortOrder;
 };
 export type MovieSumOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     genre_id?: Prisma.SortOrder;
     language_id?: Prisma.SortOrder;
     oscar_count?: Prisma.SortOrder;
+    duration?: Prisma.SortOrder;
 };
 export type MovieCreateNestedManyWithoutGenresInput = {
     create?: Prisma.XOR<Prisma.MovieCreateWithoutGenresInput, Prisma.MovieUncheckedCreateWithoutGenresInput> | Prisma.MovieCreateWithoutGenresInput[] | Prisma.MovieUncheckedCreateWithoutGenresInput[];
@@ -423,6 +451,7 @@ export type MovieCreateWithoutGenresInput = {
     title?: string | null;
     release_date?: Date | string | null;
     oscar_count?: number | null;
+    duration?: number | null;
     languages?: Prisma.languageCreateNestedOneWithoutMoviesInput;
 };
 export type MovieUncheckedCreateWithoutGenresInput = {
@@ -431,6 +460,7 @@ export type MovieUncheckedCreateWithoutGenresInput = {
     release_date?: Date | string | null;
     language_id?: number | null;
     oscar_count?: number | null;
+    duration?: number | null;
 };
 export type MovieCreateOrConnectWithoutGenresInput = {
     where: Prisma.MovieWhereUniqueInput;
@@ -463,11 +493,13 @@ export type MovieScalarWhereInput = {
     genre_id?: Prisma.IntNullableFilter<"Movie"> | number | null;
     language_id?: Prisma.IntNullableFilter<"Movie"> | number | null;
     oscar_count?: Prisma.IntNullableFilter<"Movie"> | number | null;
+    duration?: Prisma.IntNullableFilter<"Movie"> | number | null;
 };
 export type MovieCreateWithoutLanguagesInput = {
     title?: string | null;
     release_date?: Date | string | null;
     oscar_count?: number | null;
+    duration?: number | null;
     genres?: Prisma.GenreCreateNestedOneWithoutMoviesInput;
 };
 export type MovieUncheckedCreateWithoutLanguagesInput = {
@@ -476,6 +508,7 @@ export type MovieUncheckedCreateWithoutLanguagesInput = {
     release_date?: Date | string | null;
     genre_id?: number | null;
     oscar_count?: number | null;
+    duration?: number | null;
 };
 export type MovieCreateOrConnectWithoutLanguagesInput = {
     where: Prisma.MovieWhereUniqueInput;
@@ -504,11 +537,13 @@ export type MovieCreateManyGenresInput = {
     release_date?: Date | string | null;
     language_id?: number | null;
     oscar_count?: number | null;
+    duration?: number | null;
 };
 export type MovieUpdateWithoutGenresInput = {
     title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     release_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     oscar_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     languages?: Prisma.languageUpdateOneWithoutMoviesNestedInput;
 };
 export type MovieUncheckedUpdateWithoutGenresInput = {
@@ -517,6 +552,7 @@ export type MovieUncheckedUpdateWithoutGenresInput = {
     release_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     language_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     oscar_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
 };
 export type MovieUncheckedUpdateManyWithoutGenresInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -524,6 +560,7 @@ export type MovieUncheckedUpdateManyWithoutGenresInput = {
     release_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     language_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     oscar_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
 };
 export type MovieCreateManyLanguagesInput = {
     id?: number;
@@ -531,11 +568,13 @@ export type MovieCreateManyLanguagesInput = {
     release_date?: Date | string | null;
     genre_id?: number | null;
     oscar_count?: number | null;
+    duration?: number | null;
 };
 export type MovieUpdateWithoutLanguagesInput = {
     title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     release_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     oscar_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     genres?: Prisma.GenreUpdateOneWithoutMoviesNestedInput;
 };
 export type MovieUncheckedUpdateWithoutLanguagesInput = {
@@ -544,6 +583,7 @@ export type MovieUncheckedUpdateWithoutLanguagesInput = {
     release_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     genre_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     oscar_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
 };
 export type MovieUncheckedUpdateManyWithoutLanguagesInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -551,6 +591,7 @@ export type MovieUncheckedUpdateManyWithoutLanguagesInput = {
     release_date?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
     genre_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     oscar_count?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
 };
 export type MovieSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -559,6 +600,7 @@ export type MovieSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     genre_id?: boolean;
     language_id?: boolean;
     oscar_count?: boolean;
+    duration?: boolean;
     genres?: boolean | Prisma.Movie$genresArgs<ExtArgs>;
     languages?: boolean | Prisma.Movie$languagesArgs<ExtArgs>;
 }, ExtArgs["result"]["movie"]>;
@@ -569,6 +611,7 @@ export type MovieSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
     genre_id?: boolean;
     language_id?: boolean;
     oscar_count?: boolean;
+    duration?: boolean;
     genres?: boolean | Prisma.Movie$genresArgs<ExtArgs>;
     languages?: boolean | Prisma.Movie$languagesArgs<ExtArgs>;
 }, ExtArgs["result"]["movie"]>;
@@ -579,6 +622,7 @@ export type MovieSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
     genre_id?: boolean;
     language_id?: boolean;
     oscar_count?: boolean;
+    duration?: boolean;
     genres?: boolean | Prisma.Movie$genresArgs<ExtArgs>;
     languages?: boolean | Prisma.Movie$languagesArgs<ExtArgs>;
 }, ExtArgs["result"]["movie"]>;
@@ -589,8 +633,9 @@ export type MovieSelectScalar = {
     genre_id?: boolean;
     language_id?: boolean;
     oscar_count?: boolean;
+    duration?: boolean;
 };
-export type MovieOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "release_date" | "genre_id" | "language_id" | "oscar_count", ExtArgs["result"]["movie"]>;
+export type MovieOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "release_date" | "genre_id" | "language_id" | "oscar_count" | "duration", ExtArgs["result"]["movie"]>;
 export type MovieInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     genres?: boolean | Prisma.Movie$genresArgs<ExtArgs>;
     languages?: boolean | Prisma.Movie$languagesArgs<ExtArgs>;
@@ -616,6 +661,7 @@ export type $MoviePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
         genre_id: number | null;
         language_id: number | null;
         oscar_count: number | null;
+        duration: number | null;
     }, ExtArgs["result"]["movie"]>;
     composites: {};
 };
@@ -978,6 +1024,7 @@ export interface MovieFieldRefs {
     readonly genre_id: Prisma.FieldRef<"Movie", 'Int'>;
     readonly language_id: Prisma.FieldRef<"Movie", 'Int'>;
     readonly oscar_count: Prisma.FieldRef<"Movie", 'Int'>;
+    readonly duration: Prisma.FieldRef<"Movie", 'Int'>;
 }
 /**
  * Movie findUnique

@@ -6,7 +6,7 @@ const port = 3000;
 const app = express();
 app.use(express.json());
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.get("/movies", async (_, res) => {
+app.get("/movies", async (req, res) => {
     const movies = await prisma.movie.findMany({
         orderBy: {
             title: "asc",
@@ -16,7 +16,42 @@ app.get("/movies", async (_, res) => {
             languages: true,
         },
     });
-    res.json(movies);
+    const totalMovies = await prisma.movie.count();
+    let totalDuration = 0;
+    for (let movie of movies) {
+        totalDuration += movie.duration ?? 0;
+    }
+    const averageDuration = totalDuration > 0 ? totalDuration / totalMovies : 0;
+    res.json({ totalMovies, averageDuration, movies });
+});
+app.get("/movies/sort", async (req, res) => {
+    const { language, sort } = req.query;
+    const languageName = language;
+    let where = {};
+    if (languageName) {
+        where = {
+            languages: {
+                name: {
+                    equals: languageName,
+                    mode: "insensitive",
+                },
+            },
+        };
+    }
+    const orderBy = sort === "title"
+        ? { title: "asc" }
+        : sort === "release_date"
+            ? { release_date: "asc" }
+            : {};
+    const movies = await prisma.movie.findMany({
+        where,
+        orderBy,
+        include: {
+            languages: true,
+            genres: true
+        }
+    });
+    res.status(200).send(movies);
 });
 app.get("/movies/:id", async (req, res) => {
     const id = Number(req.params.id);
@@ -25,8 +60,8 @@ app.get("/movies/:id", async (req, res) => {
             where: { id },
             include: {
                 genres: true,
-                languages: true
-            }
+                languages: true,
+            },
         });
         if (!movies) {
             return res.status(404).send({ message: "Filme não encontrado" });
@@ -38,7 +73,7 @@ app.get("/movies/:id", async (req, res) => {
     }
 });
 app.post("/movies", async (req, res) => {
-    const { title, genre_id, language_id, oscar_count, release_date } = req.body;
+    const { title, genre_id, language_id, oscar_count, release_date, duration, } = req.body;
     try {
         const movieWithSameTitle = await prisma.movie.findFirst({
             where: {
@@ -57,6 +92,7 @@ app.post("/movies", async (req, res) => {
                 language_id,
                 oscar_count,
                 release_date: new Date(release_date),
+                duration,
             },
         });
         res.status(201).send();
@@ -124,6 +160,101 @@ app.get("/movies/:genreName", async (req, res) => {
     }
     catch (error) {
         res.status(500).send({ message: "Falha ao encontrar o filme" });
+    }
+});
+app.get("/genres", async (_, res) => {
+    try {
+        const genres = await prisma.genre.findMany({
+            orderBy: { name: "asc" },
+        });
+        res.json(genres);
+    }
+    catch (error) {
+        res.status(500).send({
+            message: "Houve um problema ao buscar os gêneros.",
+        });
+    }
+});
+app.put("/genres/:id", async (req, res) => {
+    const id = Number(req.params.id);
+    const name = req.body.name;
+    if (!name) {
+        return res
+            .status(400)
+            .send({ message: "O nome do gênero é obrigatório." });
+    }
+    try {
+        const genre = await prisma.genre.findUnique({
+            where: { id },
+        });
+        if (!genre) {
+            res.status(404).send({ message: "Falha ao encontrar o gênero" });
+        }
+        const existingGenre = await prisma.genre.findFirst({
+            where: {
+                name: { equals: name, mode: "insensitive" },
+                id: { not: Number(id) },
+            },
+        });
+        if (existingGenre) {
+            return res
+                .status(409)
+                .send({ message: "Este nome de gênero já existe." });
+        }
+        const data = { ...req.body };
+        await prisma.genre.update({
+            where: { id },
+            data,
+        });
+        res.status(200).send();
+    }
+    catch (error) {
+        res.status(500).send({ message: "Falha ao atualizar o gênero" });
+    }
+});
+app.post("/genres", async (req, res) => {
+    const { name } = req.body;
+    if (!name) {
+        return res
+            .status(400)
+            .send({ message: "O nome do gênero é obrigatório." });
+    }
+    try {
+        const genreWithSameName = await prisma.genre.findFirst({
+            where: {
+                name: { equals: name, mode: "insensitive" },
+            },
+        });
+        if (genreWithSameName) {
+            return res
+                .status(409)
+                .send({ message: "Este nome de gênero já existe." });
+        }
+        await prisma.genre.create({
+            data: { name },
+        });
+        res.status(201).send();
+    }
+    catch (error) {
+        res.status(500).send({ message: "Falha ao adicionar o gênero" });
+    }
+});
+app.delete("/genres/:id", async (req, res) => {
+    const id = Number(req.params.id);
+    try {
+        const genreNotExist = await prisma.genre.findFirst({
+            where: { id },
+        });
+        if (!genreNotExist) {
+            return res
+                .status(404)
+                .send({ message: "Este nome de gênero não existe." });
+        }
+        await prisma.genre.delete({ where: { id } });
+        res.status(200).send();
+    }
+    catch (error) {
+        res.status(500).send({ message: "Falha ao deletar o gênero" });
     }
 });
 app.listen(port, () => {
