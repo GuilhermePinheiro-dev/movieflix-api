@@ -88,10 +88,10 @@ DATABASE_URL=postgresql://usuario:senha@localhost:5432/movieFlix
 
 ### Explicação das Variáveis de Ambiente
 
-| Variável          | Descrição                       | Exemplo                                               |
-| ----------------- | ------------------------------- | ----------------------------------------------------- |
-| `DATABASE_URL`    | String de conexão do PostgreSQL | `postgresql://usuario:senha@localhost:5432/movieFlix` |
-| `PORT`            | Porta do servidor               | `3000`                                                |
+| Variável       | Descrição                       | Exemplo                                               |
+| -------------- | ------------------------------- | ----------------------------------------------------- |
+| `DATABASE_URL` | String de conexão do PostgreSQL | `postgresql://usuario:senha@localhost:5432/movieFlix` |
+| `PORT`         | Porta do servidor               | `3000`                                                |
 
 ## 🚀 Executando o Projeto
 
@@ -137,7 +137,7 @@ A documentação completa da API está disponível através de uma interface Swa
 ### URL Base
 
 ```
-http://localhost:3000/movies
+http://localhost:3000
 ```
 
 ### Exemplos de Endpoints
@@ -150,13 +150,19 @@ http://localhost:3000/movies
 GET /movies
 ```
 
-#### 2. Obter Filme por ID
+#### 2. Ordenar ou filtrar filmes por idioma
 
 ```http
-GET /movies/:id
+GET /movies/sort?language=Inglês&sort=title
 ```
 
-#### 3. Criar um Novo Filme
+#### 3. Obter Filme por ID
+
+```http
+GET /movies/1
+```
+
+#### 4. Criar um Novo Filme
 
 ```http
 POST /movies
@@ -165,34 +171,70 @@ Content-Type: application/json
 {
   "title": "Inception",
   "genre_id": 2,
-  "language: 4,
-  "oscar_count: 0,
+  "language_id": 4,
+  "oscar_count": 0,
   "release_date": "2020-02-10",
+  "duration": 148
 }
 ```
 
-#### 4. Atualizar um Filme
+#### 5. Atualizar um Filme
 
 ```http
-PUT /movies/:id
+PUT /movies/1
 Content-Type: application/json
 
 {
   "title": "Inception",
-  "oscar_count: 1
+  "oscar_count": 1,
+  "duration": 148
 }
 ```
 
-#### 5. Deletar um Filme
+#### 6. Deletar um Filme
 
 ```http
-DELETE movies/:id
+DELETE /movies/1
 ```
 
-#### 6. Filtrar Filmes por Gênero
+#### 7. Filtrar Filmes por Gênero
 
 ```http
 GET /movies/Ação
+```
+
+#### 8. Listar Gêneros
+
+```http
+GET /genres
+```
+
+#### 9. Criar um Gênero
+
+```http
+POST /genres
+Content-Type: application/json
+
+{
+  "name": "Ação"
+}
+```
+
+#### 10. Atualizar um Gênero
+
+```http
+PUT /genres/1
+Content-Type: application/json
+
+{
+  "name": "Aventura"
+}
+```
+
+#### 11. Deletar um Gênero
+
+```http
+DELETE /genres/1
 ```
 
 ---
@@ -236,5 +278,3 @@ Este projeto está licenciado sob a Licença MIT. Veja o arquivo `LICENSE` para 
 Para questões, solicitações de recursos ou dúvidas, abra uma issue no repositório.
 
 ---
-
-**Bom código! 🎬**
