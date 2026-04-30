@@ -33,6 +33,33 @@ app.get("/movies", async (req, res) => {
     res.json({ totalMovies, averageDuration, movies });
 });
 
+app.get("/movies/sort", async (req, res) => {
+    const { sort } = req.query;
+
+    const orderBy: Prisma.MovieOrderByWithRelationInput = 
+        sort === "title" 
+            ? { title: "asc" }
+            : sort === "release_date" 
+            ? { release_date: "asc" as const}
+            : {}; 
+
+    try {
+        const movies = await prisma.movie.findMany({
+            orderBy,
+            include: {
+                genres: true,
+                languages: true,
+            },
+        });
+        res.json(movies);
+    } catch (error) {
+        res.status(500).send({
+            message: "Houve um problema ao buscar os filmes.",
+        });
+    }
+});
+
+
 app.get("/movies/:id", async (req, res) => {
     const id = Number(req.params.id);
 
@@ -55,31 +82,6 @@ app.get("/movies/:id", async (req, res) => {
     }
 });
 
-app.get("/movies/sort", async (req, res) => {
-    const { sort } = req.query;
-
-    const orderBy: Prisma.MovieOrderByWithRelationInput = 
-        sort === "title" 
-            ? { title: "asc" }
-            : sort === "release_date" 
-            ? { release_date: "asc" }
-            : {}; 
-
-    try {
-        const movies = await prisma.movie.findMany({
-            orderBy,
-            include: {
-                genres: true,
-                languages: true,
-            },
-        });
-        res.json(movies);
-    } catch (error) {
-        res.status(500).send({
-            message: "Houve um problema ao buscar os filmes.",
-        });
-    }
-});
 
 app.post("/movies", async (req, res) => {
     const {
