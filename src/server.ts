@@ -33,35 +33,9 @@ app.get("/movies", async (req, res) => {
     res.json({ totalMovies, averageDuration, movies });
 });
 
-app.get("/movies/sort", async (req, res) => {
-    const { sort } = req.query;
-
-    const orderBy: Prisma.MovieOrderByWithRelationInput = 
-        sort === "title" 
-            ? { title: "asc" }
-            : sort === "release_date" 
-            ? { release_date: "asc" as const}
-            : {}; 
-
-    try {
-        const movies = await prisma.movie.findMany({
-            orderBy,
-            include: {
-                genres: true,
-                languages: true,
-            },
-        });
-        res.json(movies);
-    } catch (error) {
-        res.status(500).send({
-            message: "Houve um problema ao buscar os filmes.",
-        });
-    }
-});
-
-app.get("/movies/languages", async (req,res)=>{
-    const { languages } = req.query;
-    const languageName = languages as string;
+app.get("/movies/sort", async (req, res)=>{
+    const {language , sort } = req.query
+    const languageName = language as string;
 
     let where = {};
     if (languageName) {
@@ -75,21 +49,23 @@ app.get("/movies/languages", async (req,res)=>{
         };
     }
 
-    try {
-        const movies = await prisma.movie.findMany({
-            where,
-            include: {
-                genres: true,
-                languages: true,
-            },
-        });
+    const orderBy: Prisma.MovieOrderByWithRelationInput = 
+        sort === "title" 
+            ? { title: "asc" }
+            : sort === "release_date" 
+            ? { release_date: "asc" as const}
+            : {};
 
-        res.json(movies);
-    } catch (error) {
-        res.status(500).send({
-            message: "Houve um problema ao buscar os filmes.",
-        });
-    }
+    const movies = await prisma.movie.findMany({
+        where,
+        orderBy,
+        include: {
+            languages: true,
+            genres: true
+        }
+    })
+
+    res.status(200).send(movies)
 })
 
 app.get("/movies/:id", async (req, res) => {
